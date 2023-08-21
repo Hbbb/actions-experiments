@@ -47,7 +47,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add pubspec.yaml
           git commit -m "Update pubspec.yaml version to ${{steps.bump-semver.outputs.new_version}}"
-          git push
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/sodality-tech/flutter-app.git
 
       # # Updates the pubspec.yaml with the new version, commits and pushes it
       # - name: Update pubspec.yaml version
