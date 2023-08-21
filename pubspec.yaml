@@ -1,0 +1,636 @@
+name: rlly
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 0.24.18
+
+environment:
+  sdk: '>=2.17.5 <3.0.0'
+  flutter: '3.7.12'
+
+# This is how you do variables in yaml (anchors)
+# Can also do join:
+# path : !join [*varName, *vers]
+variables:
+  # rlly ---------------------------------
+  rlly-name: &rlly_name 'rlly'
+  rlly-app-id: &rlly_app_id 'com.letsgo.rlly'
+  rlly-dev-name: &rlly_dev_name 'rlly dev'
+  rlly-dev-app-id: &rlly_dev_app_id 'com.letsgo.rlly.dev'
+
+  rlly-icon: &rlly_icon 'assets/flavor/icon/rlly/icon.png'
+  rlly-launch: &rlly_launch 'LaunchScreenRllyprod'
+  rlly-launch-dev: &rlly_launch_dev 'LaunchScreenRllydev'
+
+  ## Firebase
+  rlly-firebase-ios: &rlly_firebase_ios '.firebase/ios/GoogleService-Info-rllyProd.plist'
+  rlly-firebase-android: &rlly_firebase_android '.firebase/android/google-services-rllyProd.json'
+  rlly-dev-firebase-ios: &rlly_dev_firebase_ios '.firebase/ios/GoogleService-Info-rllyDev.plist'
+  rlly-dev-firebase-android: &rlly_dev_firebase_android '.firebase/android/google-services-rllyDev.json'
+
+  ## Branch
+  rlly-url-scheme: &rlly_url_scheme 'rlly'
+  rlly-custom-link: &rlly_custom_link 'link.rlly.com'
+  # Note: Due to limitations in branch, we have to use flavors to switch on test and live
+  # So dev points to test for both and prod points to live for both for now.
+  # See: https://github.com/RodrigoSMarques/flutter_branch_sdk/issues/208
+  rlly-branch: &rlly_branch_live 'key_live_la9GW3IfjToOOUoIWnrHbgihBylEDkqu'
+  rlly-branch-test: &rlly_branch_test 'key_test_kn6M51IjkVlMMGoJ5bPvvmgduFjzxirM'
+  rlly-alt-subdomain-android: &rlly_alt_subdomain_android = "myrlly"
+  rlly-alt-subdomain-ios: &rlly_alt_subdomain_ios 'myrlly'
+
+  ## Geo Location SDK
+  rlly-geo-background: &rlly_geo_background '4b9a408cc4df6da1e9eb7dc6ec91ba6aa98015e83a04bc9a2450c01be7f067e2'
+  rlly-enable-location: &rlly_enable_location 'YES'
+
+  # Ping ---------------------------------
+  ping-name: &ping_name 'Ping'
+  ping-app-id: &ping_app_id 'com.letsgo.ping'
+  ping-dev-name: &ping_dev_name 'Ping Dev'
+  ping-dev-app-id: &ping_dev_app_id 'com.letsgo.ping.dev'
+
+  ping-icon: &ping_icon 'assets/flavor/icon/ping/icon.png'
+  ping-launch: &ping_launch 'LaunchScreenPingprod'
+  ping-launch-dev: &ping_launch_dev 'LaunchScreenPingdev'
+
+  ## Firebase
+  ping-firebase-ios: &ping_firebase_ios '.firebase/ios/GoogleService-Info-pingProd.plist'
+  ping-firebase-android: &ping_firebase_android '.firebase/android/google-services-pingProd.json'
+  ping-dev-firebase-ios: &ping_dev_firebase_ios '.firebase/ios/GoogleService-Info-pingDev.plist'
+  ping-dev-firebase-android: &ping_dev_firebase_android '.firebase/android/google-services-pingDev.json'
+
+  ## Branch
+  ping-url-scheme: &ping_url_scheme 'ping'
+  ping-custom-link: &ping_custom_link 'ping.rlly.com'
+  ping-branch: &ping_branch_live 'key_live_hl3YJZrLjLKF8yt5Klc6SpokwrkjC3Ow'
+  ping-branch-test: &ping_branch_test 'key_test_geXYKXsOmOSC2Bq8Sho2GceozxckC4VG'
+  ping-alt-subdomain-android: &ping_alt_subdomain_android = "getping"
+  ping-alt-subdomain-ios: &ping_alt_subdomain_ios 'getping'
+
+  ## Geo Location SDK
+  ping-geo-background: &ping_geo_background '6e3752c8dedd2bc127697df75a30945824f132ad51d8666d98687df9bcb42646'
+  ping-enable-location: &ping_enable_location 'YES'
+
+  # SameSame ---------------------------------
+  same-name: &same_name 'SameSame'
+  same-app-id: &same_app_id 'com.letsgo.same'
+  same-dev-name: &same_dev_name 'SameSame Dev'
+  same-dev-app-id: &same_dev_app_id 'com.letsgo.same.dev'
+
+  same-icon: &same_icon 'assets/flavor/icon/same/icon.png'
+  same-launch: &same_launch 'LaunchScreenSameprod'
+  same-launch-dev: &same_launch_dev 'LaunchScreenSamedev'
+
+  ## Firebase
+  same-firebase-ios: &same_firebase_ios '.firebase/ios/GoogleService-Info-sameProd.plist'
+  same-firebase-android: &same_firebase_android '.firebase/android/google-services-sameProd.json'
+  same-dev-firebase-ios: &same_dev_firebase_ios '.firebase/ios/GoogleService-Info-sameDev.plist'
+  same-dev-firebase-android: &same_dev_firebase_android '.firebase/android/google-services-sameDev.json'
+
+  ## Branch
+  same-url-scheme: &same_url_scheme 'samesame'
+  same-custom-link: &same_custom_link 'link.samesame.social'
+  same-branch: &same_branch_live 'key_live_iDkhmzQAkg4X6OI6ki9yrenpDsloakJR'
+  same-branch-test: &same_branch_test 'key_test_jrpbbyUsao34XON3mAagshblrzncpfG7'
+  same-alt-subdomain-android: &same_alt_subdomain_android = "samesame"
+  same-alt-subdomain-ios: &same_alt_subdomain_ios 'samesame'
+
+  ## Geo Location SDK
+  same-geo-background: &same_geo_background '51ade03d076890f0c8707ff0ca8122f67ae0a112b38ce83bff2df74ce1d327fc'
+  same-enable-location: &same_enable_location 'NO'
+  # For Android, we created specific AndroidManifest files that remove the need for the permission
+  # inside the /android/app/src/sameProd/AndroidManifest.xml file
+
+flavorizr:
+  ide: vscode
+  flavors:
+    rllyDev:
+      app:
+        name: *rlly_dev_name
+      android:
+        applicationId: *rlly_dev_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *rlly_alt_subdomain_android
+          versionNameSuffix: '"-dev"'
+        firebase:
+          config: *rlly_dev_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *rlly_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *rlly_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *rlly_branch_test
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *rlly_branch_test
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *rlly_geo_background
+      ios:
+        bundleId: *rlly_dev_app_id
+        firebase:
+          config: *rlly_dev_firebase_ios
+        icon: *rlly_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *rlly_launch_dev
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *rlly_url_scheme
+          CUSTOM_LINK:
+            value: *rlly_custom_link
+          ALT_SUBDOMAIN:
+            value: *rlly_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *rlly_branch_test
+          BRANCH_KEY_TEST:
+            value: *rlly_branch_test
+          BUNDLE_ID:
+            value: *rlly_dev_app_id
+          ENABLE_LOCATION:
+            value: *rlly_enable_location
+    rllyProd:
+      app:
+        name: *rlly_name
+      android:
+        applicationId: *rlly_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *rlly_alt_subdomain_android
+        firebase:
+          config: *rlly_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *rlly_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *rlly_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *rlly_branch_live
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *rlly_branch_live
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *rlly_geo_background
+      ios:
+        bundleId: *rlly_app_id
+        firebase:
+          config: *rlly_firebase_ios
+        icon: *rlly_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *rlly_launch
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *rlly_url_scheme
+          CUSTOM_LINK:
+            value: *rlly_custom_link
+          ALT_SUBDOMAIN:
+            value: *rlly_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *rlly_branch_live
+          BRANCH_KEY_TEST:
+            value: *rlly_branch_live
+          BUNDLE_ID:
+            value: *rlly_app_id
+          ENABLE_LOCATION:
+            value: *rlly_enable_location
+
+    pingDev:
+      app:
+        name: *ping_dev_name
+      android:
+        applicationId: *ping_dev_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *ping_alt_subdomain_android
+          versionNameSuffix: '"-dev"'
+        firebase:
+          config: *ping_dev_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *ping_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *ping_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *ping_branch_test
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *ping_branch_test
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *ping_geo_background
+      ios:
+        bundleId: *ping_dev_app_id
+        firebase:
+          config: *ping_dev_firebase_ios
+        icon: *ping_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *ping_launch_dev
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *ping_url_scheme
+          CUSTOM_LINK:
+            value: *ping_custom_link
+          ALT_SUBDOMAIN:
+            value: *ping_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *ping_branch_test
+          BRANCH_KEY_TEST:
+            value: *ping_branch_test
+          BUNDLE_ID:
+            value: *ping_dev_app_id
+          ENABLE_LOCATION:
+            value: *ping_enable_location
+    pingProd:
+      app:
+        name: *ping_name
+      android:
+        applicationId: *ping_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *ping_alt_subdomain_android
+        firebase:
+          config: *ping_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *ping_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *ping_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *ping_branch_live
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *ping_branch_live
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *ping_geo_background
+      ios:
+        bundleId: *ping_app_id
+        firebase:
+          config: *ping_firebase_ios
+        icon: *ping_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *ping_launch
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *ping_url_scheme
+          CUSTOM_LINK:
+            value: *ping_custom_link
+          ALT_SUBDOMAIN:
+            value: *ping_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *ping_branch_live
+          BRANCH_KEY_TEST:
+            value: *ping_branch_live
+          BUNDLE_ID:
+            value: *ping_app_id
+          ENABLE_LOCATION:
+            value: *ping_enable_location
+
+    sameDev:
+      app:
+        name: *same_dev_name
+      android:
+        applicationId: *same_dev_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *same_alt_subdomain_android
+          versionNameSuffix: '"-dev"'
+        firebase:
+          config: *same_dev_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *same_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *same_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *same_branch_test
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *same_branch_test
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *same_geo_background
+      ios:
+        bundleId: *same_dev_app_id
+        firebase:
+          config: *same_dev_firebase_ios
+        icon: *same_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *same_launch_dev
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *same_url_scheme
+          CUSTOM_LINK:
+            value: *same_custom_link
+          ALT_SUBDOMAIN:
+            value: *same_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *same_branch_test
+          BRANCH_KEY_TEST:
+            value: *same_branch_test
+          BUNDLE_ID:
+            value: *same_dev_app_id
+          ENABLE_LOCATION:
+            value: *same_enable_location
+    sameProd:
+      app:
+        name: *same_name
+      android:
+        applicationId: *same_app_id
+        customConfig:
+          manifestPlaceholders.altSubdomain: *same_alt_subdomain_android
+        firebase:
+          config: *same_firebase_android
+        resValues:
+          # Branch (must match iOS)
+          URL_SCHEME:
+            type: 'string'
+            value: *same_url_scheme
+          CUSTOM_LINK:
+            type: 'string'
+            value: *same_custom_link
+          BRANCH_KEY_LIVE:
+            type: 'string'
+            value: *same_branch_live
+          BRANCH_KEY_TEST:
+            type: 'string'
+            value: *same_branch_live
+          TRANSISTOR_SOFT_LICENSE:
+            type: 'string'
+            value: *same_geo_background
+      ios:
+        bundleId: *same_app_id
+        firebase:
+          config: *same_firebase_ios
+        icon: *same_icon
+        variables:
+          LAUNCH_SCREEN_STORYBOARD:
+            value: *same_launch
+          # Branch (must match Android)
+          URL_SCHEME:
+            value: *same_url_scheme
+          CUSTOM_LINK:
+            value: *same_custom_link
+          ALT_SUBDOMAIN:
+            value: *same_alt_subdomain_ios
+          BRANCH_KEY_LIVE:
+            value: *same_branch_live
+          BRANCH_KEY_TEST:
+            value: *same_branch_live
+          BUNDLE_ID:
+            value: *same_app_id
+          ENABLE_LOCATION:
+            value: *same_enable_location
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  amplitude_flutter: ^3.8.1
+  animated_flip_counter: ^0.2.5
+  app_settings: ^4.1.6
+  async: ^2.8.2
+  auto_size_text: ^3.0.0
+  background_fetch: '^1.1.3'
+  badges: ^3.1.1
+  blobs: ^2.0.0
+  bubble_chart:
+    git:
+      url: https://github.com/sodality-tech/bubble_chart.git
+      ref: master
+  cached_network_image: ^3.2.0
+  characters: ^1.2.1
+  collection: ^1.15.0
+  confetti: ^0.7.0
+  contacts_service: ^0.6.3
+  cupertino_icons: ^1.0.2
+  datadog_flutter_plugin: ^1.3.2
+  easy_debounce: ^2.0.2+1
+  encrypt: ^5.0.1
+  firebase_analytics: ^10.0.2
+  firebase_core: ^2.1.0
+  firebase_in_app_messaging: ^0.7.0+2
+  firebase_messaging: ^14.0.2
+  firebase_performance: ^0.9.0+2
+  flutter:
+    sdk: flutter
+  flutter_app_badger: ^1.3.0
+  flutter_background_geolocation: ^4.11.1
+  flutter_branch_sdk: ^6.0.0
+  flutter_fortune_wheel:
+    git:
+      url: https://github.com/sodality-tech/flutter_fortune_wheel
+      ref: 6071b9d
+  flutter_html: ^3.0.0-beta.2
+  flutter_local_notifications: ^14.0.0
+  flutter_reaction_button:
+    git:
+      url: https://github.com/sodality-tech/flutter-reaction-button
+      ref: master
+  flutter_sms: ^2.3.3
+  focus_detector: ^2.0.1
+  go_router: ^6.0.9
+  google_maps_flutter: ^2.2.8
+  gql: ^0.14.0
+  graphql: ^5.1.3
+  graphql_cache_inspector: ^0.0.2
+  hive: ^2.2.2
+  hive_flutter: ^1.1.0
+  http: ^0.13.4
+  image_picker: ^0.8.6
+  in_app_review: ^2.0.6
+  intl: ^0.18.1
+  intl_phone_number_input: ^0.7.1
+  live_activities: ^1.7.3
+  logging: ^1.1.1
+  map_launcher: ^2.5.0+1
+  mobile_scanner: ^3.2.0
+  mockito: ^5.3.0
+  modal_bottom_sheet: ^3.0.0-pre
+  normalize: ^0.7.0
+  package_info_plus: ^1.4.2
+  path: ^1.8.0
+  path_drawing: ^1.0.1
+  path_provider: ^2.0.0
+  permission_handler: ^10.2.0
+  profanity_filter: ^2.0.0
+  provider: ^6.0.1
+  qr_flutter: ^4.0.0
+  retry: ^3.1.0
+  screen_capture_event: ^1.1.0
+  screenshot: ^1.2.3
+  scrollable_positioned_list: ^0.3.4
+  sentry_flutter: ^7.5.0
+  share_plus: ^4.0.3
+  sheet: ^1.0.0-pre
+  shimmer: ^2.0.0
+  showcaseview:
+    git:
+      url: https://github.com/sodality-tech/flutter_showcaseview.git
+      ref: master
+  snapkit: ^2.0.0
+  timeago: ^3.4.0
+  tuple: ^2.0.0
+  url_launcher: ^6.1.4
+  uuid: ^3.0.5
+  web_socket_channel: 2.2.0
+  widgetbook: ^3.0.0-beta.11
+  widgetbook_annotation: ^3.0.0-beta.7
+  widgetbook_models: ^3.0.0-beta.3
+
+dev_dependencies:
+  build_runner: ^2.1.4
+  dart_code_metrics: ^5.7.2
+  flutter_flavorizr: ^2.1.5
+  flutter_launcher_icons: ^0.13.1
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.1
+  flutter_native_splash: ^2.2.7
+  flutter_test:
+    sdk: flutter
+  graphql_codegen: ^0.12.0
+
+  hive_generator: ^2.0.0
+  json_serializable: ^6.1.5
+
+  widgetbook_generator: ^3.0.0-beta.10
+
+# https://github.com/fluttercommunity/flutter_launcher_icons
+# flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  android: true
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+# The following section is specific to Flutter.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/flavor/splash/ping/logo.png
+    - assets/flavor/splash/same/logo.png
+    - assets/images/reactions/
+    - assets/images/landing_page_assets/
+    - assets/images/same_stickers/
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:f
+  fonts:
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/rlly/DMSans-Regular.ttf
+        - asset: assets/fonts/rlly/DMSans-Italic.ttf
+          style: italic
+        - asset: assets/fonts/rlly/DMSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/rlly/DMSans-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/rlly/DMSans-Bold.ttf
+          weight: 600
+        - asset: assets/fonts/rlly/DMSans-BoldItalic.ttf
+          weight: 600
+          style: italic
+    - family: Maru Outline
+      fonts:
+        - asset: assets/fonts/GT-Maru-Mega-Mini-Outline.otf
+    - family: Maru
+      fonts:
+        - asset: assets/fonts/GT-Maru-Mega-Mini.otf
+    - family: KmaIcons
+      fonts:
+        - asset: assets/fonts/KmaIcons.ttf
+    - family: Poppins
+      fonts:
+        # Including the full family font weights so we don't have to hunt them down if we want them
+        # - asset: assets/fonts/ping/Poppins-Thin.ttf
+        #   weight: 100
+        # - asset: assets/fonts/ping/Poppins-ExtraLight.ttf
+        #   weight: 200
+        # - asset: assets/fonts/ping/Poppins-Light.ttf
+        #   weight: 300
+        - asset: assets/fonts/ping/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/ping/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ping/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/ping/Poppins-Bold.ttf
+          weight: 700
+        # - asset: assets/fonts/ping/Poppins-ExtraBold.ttf
+        #   weight: 800
+        # - asset: assets/fonts/ping/Poppins-Black.ttf
+        #   weight: 900
+    - family: Objectivity
+      fonts:
+        # Including the full family font weights so we don't have to hunt them down if we want them
+        - asset: assets/fonts/same/Objectivity-Thin.otf
+          weight: 200
+        - asset: assets/fonts/same/Objectivity-Light.otf
+          weight: 300
+        - asset: assets/fonts/same/Objectivity-Regular.otf
+          weight: 400
+        - asset: assets/fonts/same/Objectivity-Medium.otf
+          weight: 500
+        - asset: assets/fonts/same/Objectivity-Bold.otf
+          weight: 600
+        - asset: assets/fonts/same/Objectivity-ExtraBold.otf
+          weight: 700
+        - asset: assets/fonts/same/Objectivity-Black.otf
+          weight: 800
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

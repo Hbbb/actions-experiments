@@ -1,0 +1,50 @@
+name: Release
+
+# To trigger this workflow, visit https://github.com/sodality-tech/flutter-app/actions/workflows/release.yml
+# and click the "Run workflow" button. Input the new version number when prompted.
+on:
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        type: choice
+        description: Is this a major, minor, or patch version?
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get current pubspec version
+        id: get-current-version
+        run: |
+          # Get the current version from pubspec.yaml
+          currentVersion=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+
+          # Set the current version as an output
+          echo "::set-output name=current_version::${currentVersion}"
+
+      - uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        with:
+          current_version: ${{ steps.get-current-version.outputs.current_version }}
+          level: ${{ github.event.inputs.releaseType }}
+
+      # Updates the pubspec.yaml with the new version, commits and pushes it
+      - name: Update pubspec.yaml version
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: "pubspec.yaml"
+          propertyPath: "version"
+          value: ${{ steps.bump-semver.outputs.new_version }}
+          commitChange: true
+          branch: main
+          masterBranchName: main
+          targetBranch: main
+          message: "Update pubspec.yaml version to ${{ steps.bump-semver.outputs.new_version }}"
