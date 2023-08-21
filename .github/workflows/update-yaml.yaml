@@ -36,15 +36,29 @@ jobs:
           current_version: ${{ steps.get-current-version.outputs.current_version }}
           level: ${{ github.event.inputs.releaseType }}
 
-      # Updates the pubspec.yaml with the new version, commits and pushes it
       - name: Update pubspec.yaml version
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: "pubspec.yaml"
-          propertyPath: "version"
-          value: ${{ steps.bump-semver.outputs.new_version }}
-          commitChange: true
-          branch: main
-          masterBranchName: main
-          targetBranch: main
-          message: "Update pubspec.yaml version to ${{ steps.bump-semver.outputs.new_version }}"
+        run: |
+          NEW_VERSION="${{ steps.bump-semver.outputs.new_version }}"
+          sed -i "s/^version: .*/version: $NEW_VERSION/" pubspec.yaml
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add pubspec.yaml
+          git commit -m "Update pubspec.yaml version to ${{steps.bump-semver.outputs.new_version}}"
+          git push
+
+      # # Updates the pubspec.yaml with the new version, commits and pushes it
+      # - name: Update pubspec.yaml version
+      #   uses: fjogeleit/yaml-update-action@main
+      #   with:
+      #     valueFile: "pubspec.yaml"
+      #     propertyPath: "version"
+      #     value: ${{ steps.bump-semver.outputs.new_version }}
+      #     noCompatMode: true
+      #     commitChange: true
+      #     branch: main
+      #     masterBranchName: main
+      #     targetBranch: main
+      #     message: "Update pubspec.yaml version to ${{ steps.bump-semver.outputs.new_version }}"
