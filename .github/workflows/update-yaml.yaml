@@ -47,7 +47,12 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add pubspec.yaml
           git commit -m "Update pubspec.yaml version to ${{steps.bump-semver.outputs.new_version}}"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/hbbb/actions-experiments.git
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
 
       # # Updates the pubspec.yaml with the new version, commits and pushes it
       # - name: Update pubspec.yaml version
